@@ -1,4 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { NotFoundError } from 'rxjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTableDto } from './dto/create-table.dto';
@@ -17,7 +22,7 @@ export class TableService {
     const record = await this.prisma.table.findUnique({ where: { id } });
 
     if (!record) {
-      throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`)
+      throw new NotFoundException(`Registro com o Id '${id}' não encontrado.`);
     }
 
     return record;
@@ -30,7 +35,7 @@ export class TableService {
   create(dto: CreateTableDto): Promise<Table> {
     const data: Table = { ...dto };
 
-    return this.prisma.table.create({ data });
+    return this.prisma.table.create({ data }).catch(this.handleError);
   }
 
   async update(id: string, dto: updateTableDto): Promise<Table> {
@@ -46,9 +51,19 @@ export class TableService {
 
   async delete(id: string) {
     await this.findById(id);
-    
-    await this.prisma.table.delete({
-      where: { id },
-    });
+
+    await this.prisma.table
+      .delete({
+        where: { id },
+      })
+      .catch(this.handleError);
+  }
+
+  handleError(error: Error): undefined {
+    const errorLines = error.message?.split('\n');
+    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
+    throw new UnprocessableEntityException(
+      lastErrorLine || 'Algum erro ocorreu ao executar a operação',
+    );
   }
 }
