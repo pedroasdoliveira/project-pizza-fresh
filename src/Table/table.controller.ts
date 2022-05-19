@@ -24,7 +24,7 @@ export class TableController {
   })
   findOne(@Param('id') id: string): Promise<Table> {
     return this.tableService.findOne(id);
-  }
+  } 
 
   @Post()
   @ApiOperation({
