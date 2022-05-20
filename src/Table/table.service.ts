@@ -28,7 +28,7 @@ export class TableService {
   }
 
   findOne(id: string): Promise<Table> {
-    return this.findOne(id);
+    return this.findById(id);
   }
 
   create(dto: CreateTableDto): Promise<Table> {
