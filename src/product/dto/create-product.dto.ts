@@ -1,6 +1,34 @@
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNumber, IsString, IsUrl } from "class-validator";
+
 export class CreateProductDto {
+  @IsString()
+  @ApiProperty({
+    description: 'Nome do produto',
+    example: 'Pizza de Mussarela',
+  })
   name: string;
+
+  @IsString()
+  @ApiProperty({
+    description: 'Descrição do produto',
+    example: 'Queijo mussarela fino do fino, massa fina e borda recheada',
+  })
   description: string;
+
+  @IsNumber({
+    maxDecimalPlaces: 2,
+  })
+  @ApiProperty({
+    description: 'Preço do produto',
+    example: 12.34,
+  })
   price: number;
+
+  @IsUrl()
+  @ApiProperty({
+    description: 'Imagem do produto',
+    example: 'https://img1.gratispng.com/20180624/tzi/kisspng-sicilian-pizza-salami-california-style-pizza-focac-sauce-pizza-wine-5b2f9b01cda4d7.2161941415298465298423.jpg',
+  })
   image: string;
 }
