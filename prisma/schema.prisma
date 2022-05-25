@@ -11,12 +11,14 @@ datasource db {
 }
 
 model Table {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
 
-  number Int    @unique
+  number Int @unique
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
 
   @@map("table")
 }
@@ -24,13 +26,15 @@ model Table {
 model Product {
   id String @id @default(uuid())
 
-  name String @unique
+  name        String @unique
   description String
-  price Float
-  image String
+  price       Float
+  image       String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
 
   @@map("product")
 }
@@ -39,12 +43,31 @@ model User {
   id String @id @default(uuid())
 
   nickname String @unique
-  name String
+  name     String
   password String
-  image String
+  image    String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  orders Order[]
+
   @@map("user")
+} 
+
+model Order {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  table   Table   @relation(fields: [tableId], references: [id])
+  tableId String @map("table_id")
+
+  products Product[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("order")
 }
