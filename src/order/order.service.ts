@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -7,7 +8,19 @@ export class OrderService {
   constructor(private readonly prisma: PrismaService) {}
 
   create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+    const data: Prisma.OrderCreateInput = {
+      user: {
+        connect: {
+          id: createOrderDto.userId,
+        },
+      },
+      table: {
+        connect: {
+          number: createOrderDto.tableNumber,
+        },
+      },
+    };
+    return this.prisma.order.create({ data }).catch(this.handleError);
   }
 
   findAll() {
@@ -16,5 +29,18 @@ export class OrderService {
 
   findOne(id: string) {
     return `This action returns a #${id} order`;
+  }
+
+  handleError(error: Error): undefined {
+    const errorLines = error.message?.split('\n');
+    const lastErrorLine = errorLines[errorLines.length - 1]?.trim();
+
+    if (!lastErrorLine) {
+      console.error(error);
+    }
+
+    throw new UnprocessableEntityException(
+      lastErrorLine || 'Algum erro ocorreu ao executar a operação',
+    );
   }
 }
