@@ -6,10 +6,10 @@ export class LoginResponseDto {
     description: 'JWT gerado pelo ID',
     example: 'TOKEN_GERADO_AUTOMATICAMENTE'
   })
-  token: string
+  token: string;
 
   @ApiProperty({
     description: 'Dados do usuário autenticado',
   })
-  user: User
+  user: User;
 }
