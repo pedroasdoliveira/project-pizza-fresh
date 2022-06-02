@@ -1,11 +1,14 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateTableDto } from './dto/create-table.dto';
 import { updateTableDto } from './dto/update-table.dto';
 import { Table } from './entities/table.entities';
 import { TableService } from './table.service';
 
 @ApiTags('table')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 @Controller('table')
 export class TableController {
   constructor(private readonly tableService: TableService) {}
@@ -24,7 +27,7 @@ export class TableController {
   })
   findOne(@Param('id') id: string): Promise<Table> {
     return this.tableService.findOne(id);
-  } 
+  }
 
   @Post()
   @ApiOperation({
