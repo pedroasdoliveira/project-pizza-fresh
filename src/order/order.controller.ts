@@ -8,7 +8,7 @@ import { OrderService } from './order.service';
 
 @ApiTags('order')
 @UseGuards(AuthGuard())
-@ApiBearerAuth()
+@ApiBearerAuth('JWT')
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}

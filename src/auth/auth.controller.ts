@@ -26,7 +26,7 @@ export class AuthController {
   @ApiOperation({
     summary: 'Retorna o usuário autentificado no momento',
   })
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   profile(@LoggedUser() user: User) {
     return user;
   }

@@ -8,7 +8,7 @@ import { TableService } from './table.service';
 
 @ApiTags('table')
 @UseGuards(AuthGuard())
-@ApiBearerAuth()
+@ApiBearerAuth('JWT')
 @Controller('table')
 export class TableController {
   constructor(private readonly tableService: TableService) {}

@@ -31,7 +31,7 @@ export class UserController {
 
   @Get()
   @UseGuards(AuthGuard())
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: 'Listar todos os usuários',
   })
@@ -41,7 +41,7 @@ export class UserController {
 
   @Get(':id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: 'Visualizar um usuário',
   })
@@ -51,7 +51,7 @@ export class UserController {
 
   @Patch(':id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @ApiOperation({
     summary: 'Editar um usuário',
   })
@@ -61,7 +61,7 @@ export class UserController {
 
   @Delete(':id')
   @UseGuards(AuthGuard())
-  @ApiBearerAuth()
+  @ApiBearerAuth('JWT')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Deletar um usuário',
